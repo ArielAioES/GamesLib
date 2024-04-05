@@ -48,6 +48,45 @@ class GameController extends Controller
         }
     }
 
+    private function fetchGame($url){
+
+        $client = new Client(); // Cria uma instância do cliente HTTP Guzzle
+
+        try {
+            $response = $client->request('GET', $url); // Faz a requisição GET
+            $content = $response->getBody()->getContents(); // Obtém o conteúdo da resposta
+            $data = json_decode($content, true); // Decodifica o JSON para um array associativo
+
+            $detailGame = []; // Array para armazenar os dados dos jogos
+
+             // Seleciona os resultados da resposta e extrai os dados relevantes dos jogos
+             foreach ($data as $game) {
+                $detailGame[] = [ // Adiciona os dados do jogo ao array de jogos
+                    'name' => $game['name'],
+                    'description' => $game['description']
+                ];
+            }
+            
+            return $detailGame; // Retorna os dados dos jogos
+        } catch (\Exception $e) {
+            return null; // Retorna null em caso de erro na requisição
+        }
+    }
+
+    public function select($query){
+        $url = "https://api.rawg.io/api/games/{$query}?key={$this->apiKey}"; // URL para a página inicial
+        $game = $this->fetchGames($url); // Busca os jogos usando a função fetchGames()
+
+        // Verifica se os jogos foram encontrados e retorna uma resposta JSON apropriada
+        if ($game !== null) {
+            return response()->json($game);
+        } else {
+            return response()->json(['error' => 'Erro ao fazer a requisição à API RAWG'], 500);
+        }
+    }
+
+
+
     // Função para retornar jogos na página inicial
     public function home()
     {
