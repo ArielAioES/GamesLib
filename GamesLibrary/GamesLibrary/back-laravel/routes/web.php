@@ -7,4 +7,8 @@ use App\Http\Controllers\GameController;
 Route::get('/api', [GameController::class, 'home']); // Rota para a página inicial
 Route::get('/api/search/{query}', [GameController::class, 'search']); // Rota para busca de jogos
 Route::get('/api/favorites', [GameController::class, 'favorites']); // Rota para jogos favoritos
-Route::get('/api/game/{slugGame}', [GameController::class, 'select']);
+Route::get('/api/game/{query}', [GameController::class, 'select']);
+
+Route::post('/api/wishlist', [GameController::class, 'store']);
+
+Route::get('/api/genres', [GameController::class, 'listGenre']);

@@ -32,7 +32,7 @@ function ListGames() {
 
     // Função para navegar para os detalhes do jogo
     const goToGameDetails = (game) => {
-        navigate(`/game/${game.id}`, { state: { game } });
+        navigate(`/game/${game.slug}`, { state: { game } });
     };
 
     // Função para lidar com a pesquisa de jogos
@@ -85,6 +85,11 @@ function ListGames() {
                                 <FaStar className='star' /> {game.rating}
                             </p>
                         )}
+                        <div className="genre-card">
+                            {game.genres.map(genre => (
+                                <li className="genre">{genre}</li>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>
