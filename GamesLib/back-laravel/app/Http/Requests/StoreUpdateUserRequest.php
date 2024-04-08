@@ -21,14 +21,14 @@ class StoreUpdateUserRequest extends FormRequest
     {
 
         $rules = [
-            'name_user' => 'required|min:3|max:255',
-            'email_user' => [
+            'name' => 'required|min:3|max:255',
+            'email' => [
                 'required',
                 'email',
                 'max:255',
                 'unique:users'
             ],
-            'password_user' => [
+            'password' => [
                 'required',
                 'min:6',
                 'max:100'
@@ -37,15 +37,15 @@ class StoreUpdateUserRequest extends FormRequest
         ];
 
         if($this->method() === 'PATCH'){
-            $rules['email_user'] = [
+            $rules['email'] = [
                 'required',
                 'email',
                 'max:255',
-                // "unique:users,email_user,{$this->id},id"
+                // "unique:users,email,{$this->id},id"
                 Rule::unique('users')->ignore($this->id),
             ];
             
-            $rules['password_user'] = [
+            $rules['password'] = [
                 'nullable',
                 'min:6',
                 'max:100'

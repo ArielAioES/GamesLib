@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\StoreUpdateUserRequest;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -27,7 +28,7 @@ class UserController extends Controller
     {
 
         $data = $request->validated();
-        $data['password_user'] = bcrypt($request->password);
+        $data['password'] = bcrypt($request->password);
 
         $user = $this->repository->create($data);
 
@@ -57,7 +58,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         if($request->password)
-        $data['password_user'] = bcrypt($request->password);
+        $data['password'] = bcrypt($request->password);
         $user -> update($data);
 
         return new UserResource($user);
@@ -70,7 +71,24 @@ public function destroy(string $id)
     $user = $this->repository->findOrFail($id);
     $user->delete();
 
-    return response()->json(['message'=> 'user successfully deleted'],204);
+    return response()->json(['message'=> 'User successfully deleted'],204);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => new UserResource($user),
+            ]);
+        } else {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
     }
 
 }

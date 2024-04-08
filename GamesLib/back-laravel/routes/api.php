@@ -19,4 +19,4 @@ Route::apiResource('/api/users', UserController::class);
 // Route::get('/api/users', [UserController::class, 'index']); // Rota para a página inicial do usuário
 // Route::post('/api/users', [UserController::class, 'store']); // Rota para registrar um usuário
 
-Route::post('/api/auth', [LoginController::class, 'auth']);
+Route::post('/api/login', [UserController::class, 'login']);
