@@ -1,0 +1,57 @@
+/* Estilos para o título de jogos favoritos */
+.title-favorites {
+    margin-top: 2rem;
+    color: white;
+    font-size: 2.5rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.game-card {
+    padding: 1rem;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Adicionando transição de escala */
+}
+
+/* Quando o cartão for clicado, aumente levemente */
+.game-card:hover,
+.game-card:focus {
+    transform: scale(1.15);
+}
+
+/* Estilos para o contêiner do Slider */
+.slick-slider {
+    margin-top: 2rem;
+    overflow: hidden;
+}
+
+
+/* Estilos para as imagens dos jogos no Slider */
+.slick-slide img {
+    width: 250px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+
+}
+
+/* Estilos para o título dos jogos no Slider */
+.slick-slide h3 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: white;
+    text-align: center;
+    flex-grow: 1;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Estilos para os pontos de navegação do Slider */
+.slick-dots {
+    display: none;
+}
