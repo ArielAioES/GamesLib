@@ -6,16 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    protected $connection = 'pgsql';
+
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('wish_list', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name_game');
             $table->string('name_user');
-            $table->number('price');
+            $table->string('email_user')->unique;
+            $table->string('password_user');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wish_list');
+        Schema::dropIfExists('users');
     }
 };
