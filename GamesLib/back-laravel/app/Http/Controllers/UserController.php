@@ -15,6 +15,7 @@ class UserController extends Controller
         protected User $repository,
     )
     {
+
     }
 
     public function index()
@@ -27,7 +28,7 @@ class UserController extends Controller
     {
 
         $data = $request->validated();
-        $data['password_user'] = bcrypt($request->password_user);
+        $data['password'] = bcrypt($request->password);
 
         $user = $this->repository->create($data);
 
@@ -56,8 +57,8 @@ class UserController extends Controller
 
         $data = $request->validated();
 
-        if($request->password_user)
-        $data['password_user'] = bcrypt($request->password_user);
+        if($request->password)
+        $data['password'] = bcrypt($request->password);
         $user -> update($data);
 
         return new UserResource($user);
@@ -75,7 +76,7 @@ public function destroy(string $id)
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email_user', 'password_user');
+        $credentials = $request->only('email', 'password');
         
         if (Auth::attempt($credentials)) {
             $user = Auth::user();

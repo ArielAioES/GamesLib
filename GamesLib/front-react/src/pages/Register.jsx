@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './Css/Register.css';
 
 function Register() {
-    const [name_user, setName_User] = useState('');
-    const [email_user, setEmail_User] = useState('');
-    const [password_user, setPassword_User] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
 
     const handleSubmit = async (e) => {
@@ -15,10 +15,11 @@ function Register() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name_user, email_user, password_user }),
+                body: JSON.stringify({ name, email, password }),
             });
             if (response.ok) {
                 console.log('Cadastro realizado com sucesso!');
+                window.location.href = '/login';
             } else {
                 console.error('Erro ao cadastrar:', await response.text());
             }
@@ -31,9 +32,9 @@ function Register() {
         <div>
             <h1 className='title'>Cadastre-se na GamesLib!</h1>
             <form onSubmit={handleSubmit} className='form-register'>
-                <p>Insira seu nome <input type="text" placeholder="Nome" value={name_user} onChange={(e) => setName_User(e.target.value)} /></p>
-                <p>Insira seu email <input type="text" placeholder="Email" value={email_user} onChange={(e) => setEmail_User(e.target.value)} /></p>
-                <p>Insira sua senha <input type="password" placeholder="Senha" value={password_user} onChange={(e) => setPassword_User(e.target.value)} /></p>
+                <p>Insira seu nome <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} /></p>
+                <p>Insira seu email <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /></p>
+                <p>Insira sua senha <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} /></p>
                 <button type="submit" className='btn-register'>Cadastrar</button>
             </form>
             <p className='login'>Já tem uma conta? <a href='/login'>Clique aqui</a></p>

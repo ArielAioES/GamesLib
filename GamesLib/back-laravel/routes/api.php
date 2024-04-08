@@ -14,8 +14,9 @@ Route::get('/api/game/{query}', [GameController::class, 'select']); // Rota para
 
 Route::apiResource('/api/users', UserController::class);
 
-// Route::delete('/api/users/{id}', [UserController::class,'destroy']);
-// Route::patch('/api/users/{id}', [UserController::class,'update']);
-// Route::get('/api/users/{id}', [UserController::class,'show']);
-// Route::get('/api/users', [UserController::class, 'index']); // Rota para a página inicial do usuário
-// Route::post('/api/users', [UserController::class, 'store']); // Rota para registrar um usuário
+Route::post('/api/login', [UserController::class, 'login']);
+
+// Route::middleware(['auth:sanctum'])->get('/api/user/profile', function (Request $request) {
+//     return $request->user();
+// });
+
