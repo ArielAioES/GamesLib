@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
@@ -18,5 +19,3 @@ Route::apiResource('/api/users', UserController::class);
 // Route::get('/api/users/{id}', [UserController::class,'show']);
 // Route::get('/api/users', [UserController::class, 'index']); // Rota para a página inicial do usuário
 // Route::post('/api/users', [UserController::class, 'store']); // Rota para registrar um usuário
-
-Route::post('/api/login', [UserController::class, 'login']);
