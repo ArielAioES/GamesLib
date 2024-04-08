@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Css/Register.css';
 
 function Register() {
     const [name_user, setName_User] = useState('');
     const [email_user, setEmail_User] = useState('');
     const [password_user, setPassword_User] = useState('');
-    const [csrfToken, setCsrfToken] = useState('');
 
-    useEffect(() => {
-        async function fetchCsrfToken() {
-            try {
-                const response = await fetch('http://127.0.0.1:8000/csrf-token');
-                const data = await response.json();
-                setCsrfToken(data.csrfToken);
-            } catch (error) {
-                console.error('Erro ao obter token CSRF:', error);
-            }
-        }
-        fetchCsrfToken();
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
