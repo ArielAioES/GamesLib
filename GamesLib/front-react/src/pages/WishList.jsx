@@ -3,7 +3,7 @@ import cleanURL from '../components/ClearURL';
 import './Css/WishList.css'; // Importe o arquivo de estilo
 
 function WishList() {
-    const [url, setUrl] = useState('');
+    const [url, setUrl] = useState(''); // Corrigido para [url, setUrl]
     const [cleanUrl, setCleanUrl] = useState('');
 
     // Pegar último parâmetro da URL
@@ -13,11 +13,9 @@ function WishList() {
     // Limpar a URL quando o componente montar
     useEffect(() => {
         const cleanNameGame = cleanURL(nameGame);
-        setUrl(nameGame);
+        setUrl(nameGame); // Corrigido para setUrl
         setCleanUrl(cleanNameGame);
-    }, []);
-
- 
+    }, [nameGame]); // Corrigido para adicionar nameGame como dependência
 
     return (
         <div className="wish-list-container">

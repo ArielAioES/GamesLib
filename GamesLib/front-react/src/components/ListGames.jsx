@@ -14,7 +14,7 @@ function ListGames() {
     const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
 
     // Consulta para buscar os dados dos jogos
-    const { data: gamesData, isLoading: isQueryLoading, isError: isQueryError } = useQuery("games", async () => {
+    const { data: gamesData, isLoading: isQueryLoading } = useQuery("games", async () => {
         try {
             const response = await axios.get("http://127.0.0.1:8000/api");
             return response.data;
