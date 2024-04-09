@@ -3,32 +3,33 @@ import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BiSearchAlt2 } from 'react-icons/bi';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 import './Css/ListGames.css';
 
 function ListGames() {
     const [games, setGames] = useState([]); // Define o estado games e a função setGames
-    const [isLoading, setIsLoading] = useState(false); // Define o estado isLoading e a função setIsLoading
     const [searchTerm, setSearchTerm] = useState(''); // Define o estado searchTerm e a função setSearchTerm
     const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
 
+    // Consulta para buscar os dados dos jogos
+    const { data: gamesData, isLoading: isQueryLoading, isError: isQueryError } = useQuery("games", async () => {
+        try {
+            const response = await axios.get("http://127.0.0.1:8000/api");
+            return response.data;
+        } catch (error) {
+            console.error("Houve um erro em acessar os jogos", error);
+            throw error;
+        }
+    });
+
     useEffect(() => {
-        const fetchGames = async () => {
-            setIsLoading(true); // Define isLoading como true enquanto carrega os jogos
-            try {
-                const res = await fetch('http://127.0.0.1:8000/api'); // Faz uma requisição para obter os jogos
-                if (!res.ok) {
-                    throw new Error('Não foi possível carregar os jogos.'); // Lança um erro se não for possível carregar os jogos
-                }
-                const data = await res.json(); // Converte a resposta para JSON
-                setGames(data); // Define os jogos no estado
-            } catch (error) {
-                console.error('Erro:', error.message); // Exibe um erro no console em caso de falha
-            }
-            setIsLoading(false); // Define isLoading como false após carregar os jogos
-        };
-        fetchGames(); // Chama a função para carregar os jogos
-    }, []);
+        if (gamesData) {
+            // Atualiza o estado de games quando os dados são obtidos da consulta
+            setGames(gamesData);
+        }
+    }, [gamesData]);
 
     // Função para navegar para os detalhes do jogo
     const goToGameDetails = (game) => {
@@ -38,23 +39,20 @@ function ListGames() {
     // Função para lidar com a pesquisa de jogos
     const handleSearch = async (event) => {
         event.preventDefault(); // Previne o comportamento padrão do formulário
-        setIsLoading(true); // Define isLoading como true enquanto realiza a pesquisa
+        const searchTermTrimmed = searchTerm.trim();
+        if (searchTermTrimmed === '') return; // Ignora a pesquisa se o termo estiver vazio
+
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/search/${searchTerm}`); // Faz uma requisição para buscar os jogos com base no termo de pesquisa
-            if (!res.ok) {
-                throw new Error('Erro na busca dos jogos.'); // Lança um erro se não for possível realizar a busca
-            }
-            const data = await res.json(); // Converte a resposta para JSON
-            setGames(data); // Define os jogos encontrados no estado
+            const response = await axios.get(`http://127.0.0.1:8000/api/search/${searchTermTrimmed}`);
+            const searchData = response.data;
+            setGames(searchData);
         } catch (error) {
-            console.error('Erro:', error.message); // Exibe um erro no console em caso de falha
+            console.error('Erro ao realizar a pesquisa:', error.message); // Exibe um erro no console em caso de falha
         }
-        setIsLoading(false); // Define isLoading como false após realizar a pesquisa
     };
 
     return (
         <div className="container">
-
             <h1 className="title">Buscar</h1>
             <form onSubmit={handleSearch}>
                 <input
@@ -67,7 +65,7 @@ function ListGames() {
                     <BiSearchAlt2 />
                 </button>
             </form>
-            {isLoading && (
+            {(isQueryLoading || !games.length) && (
                 <div className="loading-container">
                     <div className="spinner"></div>
                 </div>
@@ -87,7 +85,7 @@ function ListGames() {
                         )}
                         <div className="genre-card">
                             {game.genres.map(genre => (
-                                <li className="genre">{genre}</li>
+                                <li key={genre} className="genre">{genre}</li>
                             ))}
                         </div>
                     </div>
@@ -95,7 +93,6 @@ function ListGames() {
             </div>
         </div>
     );
-
 };
 
 export default ListGames;

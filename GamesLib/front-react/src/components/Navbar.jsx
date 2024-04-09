@@ -1,23 +1,25 @@
 //Imports necessários
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoGameController } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 
 import "./Css/Navbar.css";
 
-// Componente funcional Navbar para a barra de navegação
-const Navbar = () => {
+function Navbar() {
+  const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
+
   // Função para recarregar a página ao clicar no logo
   const handleReloadPage = () => {
     // Navegar para a página inicial e recarregar a página
-    window.location.href = '/';
+    navigate("/")
+    window.location.reload();
   };
 
   // Renderiza a Navbar
   return (
     <nav id="navbar">
       <h2>
-        <Link to="/" onClick={handleReloadPage}>
+        <Link onClick={handleReloadPage}>
           <IoGameController />GamesLib
         </Link>
       </h2>
