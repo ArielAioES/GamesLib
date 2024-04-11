@@ -13,7 +13,7 @@ function RoutesSystem() {
                 <Route element={<App />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/game/:id" element={<Game />} />
-                    <Route path="/wishlist/:id" element={<WishList />} />
+                    <Route path="/wishlist" element={<WishList />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
                 </Route>

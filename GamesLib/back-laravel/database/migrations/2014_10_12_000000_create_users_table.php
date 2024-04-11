@@ -19,7 +19,12 @@ return new class extends Migration
             $table->timestamps();
 
         });
+        Schema::create('wishlist', function (Blueprint $table) {
+            $table->id();
+            $table->string('name_game');
+        });
     }
+    
 
     /**
      * Reverse the migrations.

@@ -1,6 +1,7 @@
 //Imports necessários
 import { Link, useNavigate } from "react-router-dom";
 import { IoGameController } from "react-icons/io5";
+import { CiCircleList } from "react-icons/ci";
 import { FaUserCircle } from "react-icons/fa";
 
 import "./Css/Navbar.css";
@@ -23,8 +24,13 @@ function Navbar() {
           <IoGameController />GamesLib
         </Link>
       </h2>
+
+      <Link to="/wishlist">
+        <CiCircleList className="wishlist" />
+      </Link>
+
       <Link to="/register">
-        <FaUserCircle className="profile" />
+        <h2> <FaUserCircle className="profile" /></h2>
       </Link>
     </nav>
   );

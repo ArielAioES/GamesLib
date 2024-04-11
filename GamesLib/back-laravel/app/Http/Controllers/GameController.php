@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Models\Game;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\DB;
+use App\Models\Wishlist;
 
 // Controlador para lidar com as requisições relacionadas aos jogos
 class GameController extends Controller
@@ -163,47 +164,6 @@ class GameController extends Controller
             return null;
         }
     }
-
-//     public function listGenresAndGames($url)
-// {
-//     // Criar uma instância do cliente Guzzle
-//     $client = new Client();
-
-//     // Fazer a requisição GET para a API
-//     $response = $client->request('GET', $url);
-
-//     // Verificar se a requisição foi bem-sucedida (código de status 200)
-//     if ($response->getStatusCode() == 200) {
-//         // Decodificar o conteúdo da resposta em JSON
-//         $data = json_decode($response->getBody(), true);
-
-//         // Extrair os resultados da resposta
-//         $results = $data['results'];
-
-//         // Array para armazenar os gêneros e seus respectivos jogos
-//         $gameGenres = [];
-
-//         // Iterar sobre os resultados e exibir as informações
-//         foreach ($results as $genre) {
-//             $games = [];
-//             foreach ($genre['games'] as $game) {
-//                 $games[] = $game['name'];
-//             }
-
-//             // Adicionar o gênero e seus jogos ao array
-//             $gameGenres[] = [
-//                 'genre' => $genre['name'],
-//                 'games' => $games
-//             ];
-//         }
-
-//         // Retornar o array com os gêneros e jogos
-//         return $gameGenres;
-//     } else {
-//         echo "Erro ao obter os dados da API.";
-//     }
-// }
-
     
     public function select($query)
     {
@@ -218,12 +178,13 @@ class GameController extends Controller
         }
     }
 
+    
     // Função para retornar jogos na página inicial
     public function home()
     {
         $url = "https://api.rawg.io/api/games?key={$this->apiKey}&page=3&page_size=15"; // URL para a página inicial
         $games = $this->fetchGames($url); // Busca os jogos usando a função fetchGames()
-
+        
         // Verifica se os jogos foram encontrados e retorna uma resposta JSON apropriada
         if ($games !== null) {
             return response()->json($games);
@@ -231,13 +192,13 @@ class GameController extends Controller
             return response()->json(['error' => 'Erro ao fazer a requisição à API RAWG'], 500);
         }
     }
-
+    
     // Função para buscar jogos na API RAWG com base em uma consulta de busca
     public function search($query)
     {
         $url = "https://api.rawg.io/api/games?key={$this->apiKey}&search={$query}"; // URL de busca
         $games = $this->fetchGames($url); // Busca os jogos usando a função fetchGames()
-
+        
         // Verifica se os jogos foram encontrados e retorna uma resposta JSON apropriada
         if ($games !== null) {
             return response()->json($games);
@@ -245,13 +206,13 @@ class GameController extends Controller
             return response()->json(['error' => 'Erro ao fazer a requisição à API RAWG'], 500);
         }
     }
-
+    
     // Função para retornar jogos favoritos
     public function favorites()
     {
         $url = "https://api.rawg.io/api/games?key={$this->apiKey}&page=1&page_size=8"; // URL para os jogos favoritos
         $games = $this->fetchGames($url); // Busca os jogos usando a função fetchGames()
-
+        
         // Verifica se os jogos foram encontrados e retorna uma resposta JSON apropriada
         if ($games !== null) {
             return response()->json($games);
@@ -259,7 +220,63 @@ class GameController extends Controller
             return response()->json(['error' => 'Erro ao fazer a requisição à API RAWG'], 500);
         }
     }
+    
+    public function addWishList(Request $request)
+{
+    // Validação dos dados recebidos
+    $request->validate([
+        'name_game' => 'required|string|max:255',
+    ]);
+
+    // Recebendo o nome do jogo do corpo da requisição
+    $nameGame = $request->input('name_game');
+
+    // Verificando se o nome do jogo já existe na lista de desejos
+    $existingGame = DB::table('wishlist')->where('name_game', $nameGame)->first();
+
+    if ($existingGame) {
+        // Se o jogo já estiver na lista, retorne uma resposta de erro
+        return response()->json(['error' => 'O jogo já está na lista de desejos'], 400);
+    }
+
+    // Adicionando o nome do jogo à tabela 'wishlist' no banco de dados
+    DB::table('wishlist')->insert([
+        'name_game' => $nameGame,
+    ]);
+
+    // Retornando uma resposta de sucesso
+    return response()->json(['message' => 'Jogo adicionado à lista de desejos com sucesso']);
+}
 
 
+public function listGames()
+{
+    // Recupere todos os dados da tabela wishlist
+    $wishlistItems = Wishlist::all();
+
+    // Verifique se existem itens na lista de desejos
+    if ($wishlistItems->isEmpty()) {
+        // Se não houver itens, retorne uma resposta com status 404 (Not Found)
+        return response()->json(['message' => 'Nenhum item encontrado na lista de desejos'], 404);
+    }
+
+    // Se houver itens na lista de desejos, retorne uma resposta com os itens
+    return response()->json($wishlistItems);
+}
+
+public function removeFromWishlist($id)
+    {
+        $game = Wishlist::find($id);
+
+        if (!$game) {
+            return response()->json(['message' => 'Jogo não encontrado na lista de desejos'], 404);
+        }
+
+        $game->delete();
+
+        return response()->json(['message' => 'Jogo removido da lista de desejos'], 200);
+    }
+
+    
 }
 

@@ -12,11 +12,13 @@ Route::get('/api/search/{query}', [GameController::class, 'search']); // Rota pa
 Route::get('/api/favorites', [GameController::class, 'favorites']); // Rota para jogos favoritos
 Route::get('/api/game/{query}', [GameController::class, 'select']); // Rota para selecionar um jogo
 
+// Rotas da lista de desejo
+Route::post('/api/wishlist', [GameController::class, 'addWishList']);
+Route::get('/api/wishlist', [GameController::class, 'listGames']);
+Route::delete('/api/wishlist/{id}', [GameController::class, 'removeFromWishlist']);
+
+// Rotas do CRUD do usuário
 Route::apiResource('/api/users', UserController::class);
 
+// Rota de para logar usuário
 Route::post('/api/login', [UserController::class, 'login']);
-
-// Route::middleware(['auth:sanctum'])->get('/api/user/profile', function (Request $request) {
-//     return $request->user();
-// });
-

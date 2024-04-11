@@ -30,23 +30,16 @@
 .genre-card {
     display: flex;
     justify-content: center;
-    /* centraliza os gêneros horizontalmente */
     flex-wrap: wrap;
-    /* permite que os gêneros sejam dispostos em várias linhas se necessário */
 }
 
 .genre {
     display: inline-block;
     padding: 10px 10px;
     margin: 5px;
-    /* espaço entre os gêneros */
     border-radius: 20px;
-    /* para criar um formato circular */
     background-color: #6A5ACD;
-    /* roxo escuro */
     color: #FFF;
-    ;
-    /* cor do texto branco */
 }
 
 
@@ -128,12 +121,10 @@
 
 .games-container .game-card:hover {
     transform: scale(1.05);
-    /* Aumenta em 5% ao passar o mouse */
 }
 
 .games-container .game-card:active {
     transform: scale(0.95);
-    /* Reduz em 5% ao clicar */
 }
 
 
@@ -214,7 +205,6 @@
 @media (max-width: 1024px) {
     .games-container .game-card {
         width: calc(50% - 1rem);
-        /* Ajuste a largura para 50% do contêiner com uma margem lateral de 1rem */
     }
 }
 
@@ -222,9 +212,7 @@
 @media (max-width: 768px) {
     .games-container .game-card {
         width: calc(50% - 1rem);
-        /* Aumenta o tamanho dos cartões em telas menores */
         min-width: 250px;
-        /* Pode ajustar conforme necessário */
         margin-bottom: 1rem;
     }
 }
@@ -233,10 +221,7 @@
 @media (max-width: 480px) {
     .games-container .game-card {
         width: calc(100% - 1rem);
-        /* Ajuste a largura para ocupar toda a largura da tela com uma margem lateral de 1rem */
         margin-left: 0;
-        /* Remova a margem esquerda */
         margin-right: 0;
-        /* Remova a margem direita */
     }
 }

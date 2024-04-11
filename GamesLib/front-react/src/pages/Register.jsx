@@ -2,14 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
-import './Css/Register.css';
 import axios from 'axios';
+import './Css/Register.css';
 
 function Register() {
 
     const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
     const { register, handleSubmit, formState: { errors } } = useForm();
-
 
 
     const mutation = useMutation(
@@ -35,12 +34,12 @@ function Register() {
         <div>
             <h1 className='title'>Cadastre-se na GamesLib!</h1>
             <form onSubmit={handleSubmit(onSubmit)} className='form-register'>
-                <p>Insira seu nome <input type="text" placeholder="Nome" {...register('name', { required: true })} /></p>
-                {errors.name && <p>É obrigatório inserir um nome de usuário</p>}
-                <p>Insira seu email <input type="text" placeholder="Email" {...register('email', { required: true })} /></p>
-                {errors.email && <p>É obrigatório inserir um email</p>}
-                <p>Insira sua senha <input type="password" placeholder="Senha" {...register('password', { required: true })} /></p>
-                {errors.password && <p>É obrigatório inserir uma senha</p>}
+                <p>Insira seu nome <input type="text" className='input' placeholder="Nome" {...register('name', { required: true })} /></p>
+                {errors.name && <p className='error'>É obrigatório inserir um nome de usuário</p>}
+                <p>Insira seu email <input type="text" className='input' placeholder="Email" {...register('email', { required: true })} /></p>
+                {errors.email && <p className='error'>É obrigatório inserir um email</p>}
+                <p>Insira sua senha <input type="password" className='input' placeholder="Senha" {...register('password', { required: true })} /></p>
+                {errors.password && <p className='error'>É obrigatório inserir uma senha</p>}
                 <button type="submit" className='btn-register'>Cadastrar</button>
             </form>
             <p className='login'>Já tem uma conta? <a href='/login'>Clique aqui</a></p>

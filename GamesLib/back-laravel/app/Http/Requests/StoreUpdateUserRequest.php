@@ -38,7 +38,7 @@ class StoreUpdateUserRequest extends FormRequest
 
         if($this->method() === 'PATCH'){
             $rules['email'] = [
-                'required',
+                'required' =>
                 'email',
                 'max:255',
                 // "unique:users,email,{$this->id},id"

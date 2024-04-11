@@ -11,7 +11,7 @@
     padding: 1rem;
     margin-right: 10px;
     cursor: pointer;
-    transition: transform 0.3s ease; /* Adicionando transição de escala */
+    transition: transform 0.3s ease;
 }
 
 /* Quando o cartão for clicado, aumente levemente */

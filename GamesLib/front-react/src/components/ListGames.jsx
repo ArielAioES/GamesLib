@@ -12,6 +12,7 @@ function ListGames() {
     const [games, setGames] = useState([]); // Define o estado games e a função setGames
     const [searchTerm, setSearchTerm] = useState(''); // Define o estado searchTerm e a função setSearchTerm
     const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
+    
 
     // Consulta para buscar os dados dos jogos
     const { data: gamesData, isLoading: isQueryLoading } = useQuery("games", async () => {

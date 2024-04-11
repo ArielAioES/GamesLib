@@ -1,36 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import cleanURL from '../components/ClearURL';
-import './Css/WishList.css'; // Importe o arquivo de estilo
+import axios from 'axios';
+import '../pages/Css/WishList.css'; // Importar arquivo de estilos CSS
 
-function WishList() {
-    const [url, setUrl] = useState(''); // Corrigido para [url, setUrl]
-    const [cleanUrl, setCleanUrl] = useState('');
+const WishList = () => {
+    const [wishlist, setWishlist] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Pegar último parâmetro da URL
-    const parts = window.location.pathname.split("/");
-    const nameGame = parts[parts.length - 1];
-
-    // Limpar a URL quando o componente montar
     useEffect(() => {
-        const cleanNameGame = cleanURL(nameGame);
-        setUrl(nameGame); // Corrigido para setUrl
-        setCleanUrl(cleanNameGame);
-    }, [nameGame]); // Corrigido para adicionar nameGame como dependência
+        const fetchWishlist = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/wishlist');
+                setWishlist(response.data);
+            } catch (error) {
+                console.error('Erro ao obter a lista de desejos:', error);
+            }
+            setIsLoading(false);
+        };
+        fetchWishlist();
+    }, []);
+
+    const removeFromWishlist = async (id) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/wishlist/${id}`);
+            setWishlist(wishlist.filter(item => item.id !== id)); // Remove o jogo da lista de desejos localmente
+        } catch (error) {
+            console.error('Erro ao remover o jogo da lista de desejos:', error);
+        }
+    };
 
     return (
-        <div className="wish-list-container">
-            <form className="wish-list-form" action="">
-                <h2>Detalhes da Compra</h2>
-                <p>Nome do Jogo:</p>
-                <input type="text" value={cleanUrl} readOnly />
-                <p>Seu Nome:</p>
-                <input type="text" placeholder='Nome' />
-                <p>Preço:</p>
-                <input type="number" placeholder='R$' />
-                <button type='submit'>Comprar</button>
-            </form>
+        <div className="wishlist-container">
+            <h1 className="wishlist-title">Lista de Desejos</h1>
+            {isLoading ? (
+                <div className="loading-container">
+                    <div className="spinner"></div>
+                </div>
+            ) : wishlist.length === 0 ? (
+                <p>Nenhum jogo na lista de desejos.</p>
+            ) : (
+                <ul className="wishlist-list">
+                    {wishlist.map((item, index) => (
+                        <li key={index} className="wishlist-item">
+                            <span>{item.name_game}</span>
+                            <button onClick={() => removeFromWishlist(item.id)}>Remover</button>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
-}
+};
 
 export default WishList;
