@@ -8,6 +8,7 @@ import "./Css/Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   // Função para recarregar a página ao clicar no logo
   const handleReloadPage = () => {
@@ -25,13 +26,21 @@ function Navbar() {
         </Link>
       </h2>
 
-      <Link to="/wishlist">
-        <CiCircleList className="wishlist" />
-      </Link>
+      <div className="logged">
+        {isLoggedIn ? (
+          <>
+            <Link to="/wishlist" className="wishlist">
+              <CiCircleList className="wishlist" />
+            </Link>
 
-      <Link to="/register">
-        <h2> <FaUserCircle className="profile" /></h2>
-      </Link>
+            <Link to="/Logout">
+              <h2 className="logout"> Sair</h2>
+            </Link>
+          </>
+        ) : <Link to="/register">
+          <h2> <FaUserCircle className="profile" /></h2>
+        </Link>}
+      </div>
     </nav>
   );
 

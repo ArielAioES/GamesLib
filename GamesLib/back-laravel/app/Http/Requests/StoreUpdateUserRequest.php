@@ -41,7 +41,6 @@ class StoreUpdateUserRequest extends FormRequest
                 'required' =>
                 'email',
                 'max:255',
-                // "unique:users,email,{$this->id},id"
                 Rule::unique('users')->ignore($this->id),
             ];
             

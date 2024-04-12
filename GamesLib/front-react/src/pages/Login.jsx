@@ -9,6 +9,8 @@ function Login() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [loginError, setLoginError] = useState(null); // Estado para armazenar o erro de login
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
     const mutation = useMutation(
         async (formData) => {
@@ -16,11 +18,11 @@ function Login() {
             return response.data; // Retornar os dados da resposta para o callback onSuccess
         },
         {
-            onSuccess: (data) => {
+            onSuccess: () => {
                 console.log("Usuário logado com sucesso!");
-                const accessToken = data.access_token; // Acessar access_token diretamente dos dados retornados
-                localStorage.setItem('accessToken', accessToken); // Armazenar o token de acesso no localStorage
-                navigate("/"); // Redirecionar após o login bem-sucedido
+                localStorage.setItem('isLoggedIn', 'true'); // Armazena 'true' no localStorage
+                setIsLoggedIn(true);
+                navigate("/"); // Redireciona após o login bem-sucedido
             },
             onError: (error) => {
                 console.error(error);

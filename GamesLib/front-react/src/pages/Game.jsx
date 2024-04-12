@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+
 import "./Css/GameDetails.css";
 
 const Game = () => {
     const [detailGame, setDetailGame] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate(); // Define a função navigate com o hook useNavigate
-    const { register, handleSubmit, formState: { errors } } = useForm(); // Adicione handleSubmit para enviar os dados do formulário
+    const { register, handleSubmit } = useForm();
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const [loginError, setLoginError] = useState(null); // Estado para armazenar o erro de login
 
     const url = window.location.pathname;
     const parts = url.split("/");
@@ -44,12 +47,14 @@ const Game = () => {
                 navigate("/wishlist")
             },
             onError: (error) => {
-                console.error("Houve um erro ao enviar a requisição", error)
+                console.error(error)
+                setLoginError("Esse jogo já foi adicionado à lista de desejos")
             }
         }
     )
 
-    const onSubmit = async (data) => { // Substitua onClickButton por onSubmit e receba o 'data' do formulário
+    const onSubmit = async (data) => {
+        setLoginError(null); // Limpa a mensagem de erro ao tentar fazer login novamente
         mutation.mutate(data);
     };
 
@@ -105,11 +110,13 @@ const Game = () => {
                                     <p>Não encontrado</p>
                                 )}
                             </div>
-                            <form onSubmit={handleSubmit(onSubmit)}> {/* Adicione um formulário envolvendo o botão */}
-                                <input type="hidden" {...register('name_game', { required: true })} value={game.name} />
-                                <button className='buyGame' type='submit'>Adicionar a lista de desejos</button>
-                                {errors.name_game && <p className='error'>Esse jogo já foi adicionado a lista de desejos!</p>}
-                            </form>
+                            {isLoggedIn && (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <input type="hidden" {...register('name_game', { required: true })} value={game.name} />
+                                    <button className='buyGame' type='submit'>+ Lista de desejos</button>
+                                    {loginError && <p className="error-message">{loginError}</p>}
+                                </form>
+                            )}
                         </div>
                     </div>
                 ))

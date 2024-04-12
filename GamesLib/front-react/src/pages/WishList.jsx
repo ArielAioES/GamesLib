@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../pages/Css/WishList.css'; // Importar arquivo de estilos CSS
+
+import '../pages/Css/WishList.css';
 
 const WishList = () => {
     const [wishlist, setWishlist] = useState([]);

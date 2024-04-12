@@ -24,8 +24,16 @@
     height: 100%;
 }
 
-.wishlist {
+.logged{
     display: flex;
+}
+
+.wishlist{
     width: 35px;
     height: 100%;
+    margin-left: -1rem;    
+}
+
+.logout{
+    margin-top: 0.26rem;
 }

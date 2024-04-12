@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import './Css/ListFavoriteGame.css';
@@ -13,7 +13,6 @@ function ListFavoriteGames() {
     const navigate = useNavigate(); // Permite a navegação programática entre rotas
 
     useEffect(() => {
-        // Efeito que executa a busca dos jogos favoritos ao montar o componente
         const fetchFavorites = async () => {
             try {
                 const res = await fetch('http://127.0.0.1:8000/api/favorites'); // Faz uma requisição para obter os jogos favoritos
@@ -62,12 +61,12 @@ function ListFavoriteGames() {
 
     return (
         <>
-            <h2 className="title-favorites">Jogos Favoritos:</h2> {/* Título da lista de jogos favoritos */}
-            <Slider {...sliderSettings}> {/* Componente Slider com as configurações definidas */}
+            <h2 className="title-favorites">Jogos Favoritos:</h2>
+            <Slider {...sliderSettings}>
                 {favorites.map((game) => (
                     <div key={game.id} className="game-card" onClick={() => goToGameDetails(game)}> {/* Cartão de jogo individual */}
                         <img src={game.background_image} alt={game.name} className="game-image" /> {/* Imagem do jogo */}
-                        <h3>{game.name}</h3> {/* Nome do jogo */}
+                        <h3>{game.name}</h3>
                     </div>
                 ))}
             </Slider>
